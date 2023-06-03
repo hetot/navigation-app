@@ -10,10 +10,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class BodyGenerator {
-    public static RenameResponse rename(String path, String newName) {
+    public static BooleanResponse rename(String path, String newName) {
         path = DirectoryNavigation.getInstance().getFullPath(path);
-        return new RenameResponse(DirectoryNavigation.getInstance().rename(path, newName));
+        return new BooleanResponse(DirectoryNavigation.getInstance().rename(path, newName));
     }
+
+    public static BooleanResponse copy(String origin, String destination) {
+        origin = DirectoryNavigation.getInstance().getFullPath(origin);
+        destination = DirectoryNavigation.getInstance().getFullPath(destination);
+        return new BooleanResponse(DirectoryNavigation.getInstance().copy(origin, destination));
+    }
+
+    public static BooleanResponse move(String origin, String destination) {
+        origin = DirectoryNavigation.getInstance().getFullPath(origin);
+        destination = DirectoryNavigation.getInstance().getFullPath(destination);
+        return new BooleanResponse(DirectoryNavigation.getInstance().move(origin, destination));
+    }
+
 
     public static List<FileModel> getFiles(String path) {
         List<FileModel> response = new ArrayList<>();

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteRequest {
-    private String path;
+public class RedirectFileRequest {
+    private String origin;
+    private String destination;
 }

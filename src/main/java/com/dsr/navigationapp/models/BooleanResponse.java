@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RenameResponse {
+public class BooleanResponse {
     private boolean successful;
 }

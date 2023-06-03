@@ -5,6 +5,7 @@ import com.dsr.navigationapp.models.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class DirectoryController {
     @GetMapping(value = "/get_info")
@@ -21,13 +22,25 @@ public class DirectoryController {
 
     @DeleteMapping(value = "/remove")
     @ResponseBody
-    public DeleteResponse deleteFile(@RequestBody DeleteRequest delete) {
-        return BodyGenerator.removeFile(delete.getPath());
+    public DeleteResponse deleteFile(@RequestParam("path") String path) {
+        return BodyGenerator.removeFile(path);
     }
 
     @PostMapping(value = "/rename")
     @ResponseBody
-    public RenameResponse renameFile(@RequestBody RenameRequest request) {
+    public BooleanResponse renameFile(@RequestBody RenameRequest request) {
         return BodyGenerator.rename(request.getPath(), request.getNewName());
+    }
+
+    @PostMapping(value = "/copy")
+    @ResponseBody
+    public BooleanResponse copyFile(@RequestBody RedirectFileRequest request) {
+        return BodyGenerator.copy(request.getOrigin(), request.getDestination());
+    }
+
+    @PostMapping(value = "/move")
+    @ResponseBody
+    public BooleanResponse moveFile(@RequestBody RedirectFileRequest request) {
+        return BodyGenerator.move(request.getOrigin(), request.getDestination());
     }
 }

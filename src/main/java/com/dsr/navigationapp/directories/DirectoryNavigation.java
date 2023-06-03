@@ -3,6 +3,9 @@ package com.dsr.navigationapp.directories;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,6 +63,48 @@ public class DirectoryNavigation {
         }
         File newFile = new File(newPath.toString());
         return file.renameTo(newFile);
+    }
+
+    public boolean copy(String origin, String destination) {
+        File originFile = new File(origin);
+        File destinationFile = new File(destination);
+        if (originFile.isFile()) {
+            try {
+                FileUtils.copyFile(originFile, destinationFile);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        } else {
+            try {
+                FileUtils.copyDirectory(originFile, destinationFile);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean move(String origin, String destination) {
+        File originFile = new File(origin);
+        File destinationFile = new File(destination);
+        if (originFile.isFile()) {
+            try {
+                FileUtils.moveFile(originFile, destinationFile);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        } else {
+            try {
+                FileUtils.moveDirectory(originFile, destinationFile);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getFullPath(String path) {
