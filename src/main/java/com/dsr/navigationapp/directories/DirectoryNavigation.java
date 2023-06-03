@@ -3,9 +3,6 @@ package com.dsr.navigationapp.directories;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
