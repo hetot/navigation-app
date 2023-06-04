@@ -11,5 +11,10 @@ pipeline {
                 sh 'docker build -t hetot/navigation-app .'
             }
         }
+        stage("Docker push") {
+            steps {
+                sh 'docker push hetot/navigation-app'
+            }
+        }
     }
 }
