@@ -13,6 +13,9 @@ pipeline {
         }
         stage("Docker push") {
             steps {
+                withCredentials([string(credentialsId: 'docker-hub-pwd', variable: 'dockerhubpwd')]) {
+                    sh 'docker login -u hetot -p ${dockerhubpwd}'
+                }
                 sh 'docker push hetot/navigation-app'
             }
         }
