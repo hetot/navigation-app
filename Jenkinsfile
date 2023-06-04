@@ -13,7 +13,7 @@ pipeline {
         }
         stage("Docker build") {
             steps {
-                'docker build -t hetot/navigation-app .'
+                sh 'docker build -t hetot/navigation-app .'
             }
         }
     }
