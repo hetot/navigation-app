@@ -1,5 +1,6 @@
 package com.dsr.navigationapp.directories;
 
+import com.dsr.navigationapp.utils.ConfigReader;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -12,7 +13,7 @@ public class DirectoryNavigation {
     private final String homeDir;
 
     private DirectoryNavigation() {
-        homeDir = System.getProperty("user.home");
+        homeDir = ConfigReader.getInstance().getConfigPath();
     }
 
     public static DirectoryNavigation getInstance() {

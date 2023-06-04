@@ -41,18 +41,19 @@ public class DirectoryInfo {
     }
 
     public static String getType(String filePath) {
-        String pathToScript = "src/main/resources/scripts/get_file_type.sh";
-        File file = new File(pathToScript);
-        String absolutePath = file.getAbsolutePath();
-        String[] command = {absolutePath, filePath};
         try {
-            Process process = Runtime.getRuntime().exec(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
-            return reader.readLine().split(": ")[1];
+            ProcessBuilder pb = new ProcessBuilder("sh", "-c", "file " + "'" + filePath + "'");
+            Process process = pb.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            if ((line = reader.readLine()) != null) {
+                return line.split(": ")[1];
+            } else {
+                return "Undefined";
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            return "Undefined";
         }
     }
 }

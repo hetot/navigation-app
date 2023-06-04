@@ -6,10 +6,14 @@ pipeline {
                 git url: 'https://github.com/hetot/navigation-app', branch: 'master'
             }
         }
-        stage('Compile') {
+        stage('Package') {
             steps {
-                sh 'mvn compile'
+                sh 'mvn package'
             }
+        }
+        stage("Docker build") {
+            steps 'docker build -t hetot/navigation-app .'
+
         }
     }
 }
