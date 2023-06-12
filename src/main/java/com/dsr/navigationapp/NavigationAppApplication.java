@@ -1,5 +1,6 @@
 package com.dsr.navigationapp;
 
+import com.dsr.navigationapp.filesystem.DirectoryNavigation;
 import com.dsr.navigationapp.services.NavigationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
