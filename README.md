@@ -25,11 +25,3 @@ Client-server application that allows you to navigate the server's file system
       ```sh
         docker compose up -d
       ```
-
-### Client
-
-1. Checkout to the branch `front` and start app
-      ```sh
-        git checkout front
-        npm start
-      ```
