@@ -1,12 +1,12 @@
 package com.dsr.navigationapp.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class FileInfo {
-    private String name;
     private long size;
     private String created;
     private String modified;

@@ -1,9 +1,10 @@
-package com.dsr.navigationapp.directories;
+package com.dsr.navigationapp.filesystem;
 
 import com.dsr.navigationapp.utils.ConfigReader;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,23 +28,21 @@ public class DirectoryNavigation {
         List<String> result = new ArrayList<>();
         File tmpFile = new File(path);
         for (String filePath : Objects.requireNonNull(tmpFile.list())) {
-            result.add(path + "/" + filePath);
+            if (path.endsWith("/")) {
+                result.add(path + filePath);
+            } else {
+                result.add(path + "/" + filePath);
+            }
         }
         return result;
     }
 
-    public boolean remove(String filePath) {
+    public void remove(String filePath) throws IOException {
         File file = new File(filePath);
         if (file.isFile()) {
-            return file.delete();
+            file.delete();
         } else {
-            try {
-                FileUtils.deleteDirectory(file);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                return false;
-            }
-            return true;
+            FileUtils.deleteDirectory(file);
         }
     }
 

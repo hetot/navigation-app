@@ -1,46 +1,72 @@
 package com.dsr.navigationapp.controllers;
 
-import com.dsr.navigationapp.genarators.BodyGenerator;
-import com.dsr.navigationapp.models.*;
+import com.dsr.navigationapp.filesystem.DirectoryInfo;
+import com.dsr.navigationapp.filesystem.DirectoryNavigation;
+import com.dsr.navigationapp.models.FileInfo;
+import com.dsr.navigationapp.models.requests.rest.RenameRequestBody;
+import com.dsr.navigationapp.services.NavigationService;
+import com.dsr.navigationapp.models.responses.rest.BooleanResponseBody;
+import com.dsr.navigationapp.models.responses.rest.DeleteResponseBody;
+import com.dsr.navigationapp.models.responses.rest.PathContentResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+
 @CrossOrigin
-@RequestMapping("/api")
+@RestController
+@RequestMapping("/api/v1/web/")
 public class DirectoryController {
-    @GetMapping(value = "/get_info")
-    @ResponseBody
-    public FileInfo getInfo(@RequestParam("path") String path) {
-        return BodyGenerator.getFileInfo(path);
+    @GetMapping(value = "/directories")
+    public ResponseEntity<PathContentResponse> get(
+            @RequestParam(value = "path") String path,
+            @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size
+    ) {
+        path = DirectoryNavigation.getInstance().getFullPath(path);
+        return ResponseEntity.ok(NavigationService.getPathContent(path, page, size));
     }
 
-    @GetMapping(value = "/get_content")
-    @ResponseBody
-    public PathContent getFileContent(@RequestParam("path") String path) {
-        return BodyGenerator.getFileContent(path);
+    @GetMapping(value = "/directories/info")
+    public ResponseEntity<FileInfo> getInfo(
+            @RequestParam(value = "path") String path
+    ) {
+        path = DirectoryNavigation.getInstance().getFullPath(path);
+        return ResponseEntity.ok(DirectoryInfo.getFileInfo(path));
     }
 
-    @DeleteMapping(value = "/remove")
-    @ResponseBody
-    public DeleteResponse deleteFile(@RequestParam("path") String path) {
-        return BodyGenerator.removeFile(path);
+    @DeleteMapping(value = "/directories")
+    public ResponseEntity<DeleteResponseBody> delete(
+            @RequestParam(value = "path") String path
+    ) {
+        path = DirectoryNavigation.getInstance().getFullPath(path);
+        return ResponseEntity.ok(NavigationService.removeFile(path));
     }
 
-    @PostMapping(value = "/rename")
-    @ResponseBody
-    public BooleanResponse renameFile(@RequestBody RenameRequest request) {
-        return BodyGenerator.rename(request.getPath(), request.getNewName());
+    @PutMapping(value = "/directories")
+    public ResponseEntity<BooleanResponseBody> rename(
+            @RequestBody RenameRequestBody requestBody
+    ) {
+        var path = DirectoryNavigation.getInstance().getFullPath(requestBody.getPath());
+        return ResponseEntity.ok(NavigationService.rename(path, requestBody.getNewName()));
     }
 
-    @PostMapping(value = "/copy")
-    @ResponseBody
-    public BooleanResponse copyFile(@RequestBody RedirectFileRequest request) {
-        return BodyGenerator.copy(request.getOrigin(), request.getDestination());
+    @PutMapping(value = "/directories/copy")
+    public ResponseEntity<BooleanResponseBody> copy(
+            @RequestParam(value = "path") String path,
+            @RequestParam(value = "destination") String destination
+    ) {
+        path = DirectoryNavigation.getInstance().getFullPath(path);
+        destination = DirectoryNavigation.getInstance().getFullPath(destination);
+        return ResponseEntity.ok(NavigationService.copy(path, destination));
     }
 
-    @PostMapping(value = "/move")
-    @ResponseBody
-    public BooleanResponse moveFile(@RequestBody RedirectFileRequest request) {
-        return BodyGenerator.move(request.getOrigin(), request.getDestination());
+    @PutMapping(value = "/directories/move")
+    public ResponseEntity<BooleanResponseBody> move(
+            @RequestParam(value = "path") String path,
+            @RequestParam(value = "destination") String destination
+    ) {
+        path = DirectoryNavigation.getInstance().getFullPath(path);
+        destination = DirectoryNavigation.getInstance().getFullPath(destination);
+        return ResponseEntity.ok(NavigationService.move(path, destination));
     }
 }

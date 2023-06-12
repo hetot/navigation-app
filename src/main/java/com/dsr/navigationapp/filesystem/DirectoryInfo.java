@@ -1,8 +1,7 @@
-package com.dsr.navigationapp.directories;
+package com.dsr.navigationapp.filesystem;
 
 import com.dsr.navigationapp.models.FileInfo;
 import com.dsr.navigationapp.models.FileModel;
-import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +11,6 @@ import java.nio.file.Path;
 
 public class DirectoryInfo {
     public static FileInfo getFileInfo(String filePath) {
-        File file = new File(filePath);
         String createdTime = null;
         String lastModifiedTime = null;
         Path path = Path.of(filePath);
@@ -22,10 +20,12 @@ public class DirectoryInfo {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if (file.isFile()) {
-            return new FileInfo(file.getName(), file.length(), createdTime, lastModifiedTime);
-        }
-        return new FileInfo(file.getName(), FileUtils.sizeOfDirectory(file), createdTime, lastModifiedTime);
+        long size = DirectoryInfo.getSize(filePath);
+        return FileInfo.builder()
+                .created(createdTime)
+                .modified(lastModifiedTime)
+                .size(size)
+                .build();
     }
 
     public static FileModel getFile(String filePath) {
@@ -55,5 +55,18 @@ public class DirectoryInfo {
             System.out.println(e.getMessage());
             return "Undefined";
         }
+    }
+
+    public static long getSize(String path) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("sh", "-c", "du" + " -sb " + "'" + path + "'");
+            Process process = pb.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = reader.readLine();
+            return Long.parseLong(line.split("\t")[0]);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
     }
 }

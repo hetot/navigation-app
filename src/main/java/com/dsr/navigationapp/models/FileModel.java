@@ -1,10 +1,11 @@
 package com.dsr.navigationapp.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class FileModel {
     private String path;
     private String type;

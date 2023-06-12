@@ -1,15 +1,15 @@
-package com.dsr.navigationapp.models;
+package com.dsr.navigationapp.models.requests.rest;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RenameRequest {
+public class RenameRequestBody {
     private String path;
     private String newName;
 }
